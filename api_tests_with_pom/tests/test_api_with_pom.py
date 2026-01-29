@@ -67,45 +67,36 @@ def test_get_comments_by_id(api, post_id):
     assert "body" in comment
 
 
-def test_create_post(api):
+def test_create_post(api, create_payload):
     # Given
     endpoint = "/posts"
-    payload = {
-        "title": "classic",
-        "body": "fly me to the moon",
-        "userId": 1
-    }
 
     # When
-    response = api.post(endpoint, payload)
+    response = api.post(endpoint, create_payload)
     body = response.json()
 
     # Then
     assert response.status_code == 201
     assert body["id"] == 101
-    assert body["title"] == payload["title"]
-    assert body["body"] == payload["body"]
-    assert body["userId"] == payload["userId"]
+    assert body["title"] == create_payload["title"]
+    assert body["body"] == create_payload["body"]
+    assert body["userId"] == create_payload["userId"]
 
 
-def test_update_post(api):
+def test_update_post(api, update_payload):
     # Given
     post_id = 1
     endpoint = f"/posts/{post_id}"
-    payload = {
-        "title": "classic",
-        "body": "fly me to the moon"
-    }
 
     # When
-    response = api.put(endpoint, payload)
+    response = api.put(endpoint, update_payload)
     body = response.json()
 
     # Then
     assert response.status_code == 200
     assert body["id"] == post_id
-    assert body["title"] == payload["title"]
-    assert body["body"] == payload["body"]
+    assert body["title"] == update_payload["title"]
+    assert body["body"] == update_payload["body"]
 
 
 def test_delete_post(api):

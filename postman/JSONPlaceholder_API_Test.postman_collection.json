@@ -1,0 +1,310 @@
+{
+  "info": {
+    "_postman_id": "cfea8c76-3f75-403f-abe1-5e5db5e3c449",
+    "name": "JSONPlaceholder_API_Test",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "51158762",
+    "_collection_link": "https://go.postman.co/collection/51158762-cfea8c76-3f75-403f-abe1-5e5db5e3c449?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "GET /posts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /posts/1",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get one post\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "\r",
+              "    const body = pm.response.json();\r",
+              "    pm.expect(body.id).to.eql(1);\r",
+              "    pm.expect(body).to.have.property(\"userId\");\r",
+              "    pm.expect(body).to.have.property(\"title\");\r",
+              "    pm.expect(body).to.have.property(\"body\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /posts/:id",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get post by id\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const body = pm.response.json();\r",
+              "\r",
+              "    pm.expect(body.id).to.eql(Number(pm.iterationData.get(\"post_id\")));\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.variables.set(\"post_id\", pm.iterationData.get(\"post_id\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/{{post_id}}",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts",
+            "{{post_id}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "GET /posts/:id/comments",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Get comments by post id\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "    const body = pm.response.json();\r",
+              "\r",
+              "    pm.expect(body).to.be.an(\"array\");\r",
+              "\r",
+              "    if (body.length > 0) {\r",
+              "        const comment = body[0];\r",
+              "        pm.expect(comment.postId).to.eql(Number(pm.iterationData.get(\"post_id\")));\r",
+              "        pm.expect(comment).to.have.property(\"id\");\r",
+              "        pm.expect(comment).to.have.property(\"name\");\r",
+              "        pm.expect(comment).to.have.property(\"email\");\r",
+              "        pm.expect(comment).to.have.property(\"body\");\r",
+              "    }\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        },
+        {
+          "listen": "prerequest",
+          "script": {
+            "exec": [
+              "pm.variables.set(\"post_id\", pm.iterationData.get(\"post_id\"));"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/{{post_id}}/comments",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts",
+            "{{post_id}}",
+            "comments"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "POST /posts",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Create post\", function () {\r",
+              "    pm.response.to.have.status(201);\r",
+              "\r",
+              "    const body = pm.response.json();\r",
+              "    pm.expect(body.id).to.eql(101);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"classic\",\r\n  \"body\": \"fly me to the moon\",\r\n  \"userId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/posts",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "PUT /posts/1",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Update post\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "\r",
+              "    const body = pm.response.json();\r",
+              "    pm.expect(body.id).to.eql(1);\r",
+              "    pm.expect(body).to.have.property(\"title\");\r",
+              "    pm.expect(body).to.have.property(\"body\");\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"classic\",\r\n  \"body\": \"fly me to the moon\",\r\n  \"userId\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{base_url}}/posts/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "DELETE /posts/1",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"Delete post\", function () {\r",
+              "    pm.response.to.have.status(200);\r",
+              "});"
+            ],
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {}
+          }
+        }
+      ],
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/posts/1",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "posts",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
